@@ -9,6 +9,12 @@
  */
 
 module.exports.routes = {
+  // User
+  'POST /user': 'UserController.create',
+  'GET /user' : 'UserController.find',
+  'GET /user/:id' : 'UserController.findOne',
+  'PATCH /user/:id' : 'UserController.update',
+  'DELETE /user/:id' : 'UserController.delete'
 
 
 };
