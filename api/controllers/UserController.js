@@ -10,10 +10,10 @@ module.exports = {
   async create(req, res){
     try{
       let params = req.allParams();
-      const results = await User.create({
+      let results = await User.create({
         name: params.name,
         gender: params.gender
-      });
+      }).fetch();
       return res.json(results);
     }catch(err){
       return res.serverError(err);
@@ -22,7 +22,7 @@ module.exports = {
 
   async findOne(req, res){
     try{
-      const user = await User.findOne(
+      let user = await User.findOne(
         {
           id: req.params.id
         }
@@ -35,7 +35,7 @@ module.exports = {
 
   async find(req, res){
     try{
-      const users = await User.find();
+      let users = await User.find();
       return res.json(users);
     }catch(err){
       return res.serverError(err);
@@ -52,7 +52,7 @@ module.exports = {
       if(params.gender){
         attributes.gender = params.gender;
       }
-      const results = await User.update(
+      let results = await User.update(
         {
           id: params.id
         },
@@ -68,7 +68,7 @@ module.exports = {
 
   async delete(req, res){
     try{
-      const result = await User.destroy(
+      let result = await User.destroy(
         {
           id: params.id
         }
