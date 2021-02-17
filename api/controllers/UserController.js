@@ -74,6 +74,11 @@ module.exports = {
           id: params.id
         }
       );
+      if(result.owner){
+        let updatePet = await Pet.update({
+          owner: params.id
+        }).set({owner: null});
+      }
       return res.json(result);
     }catch(err){
       return res.serverError(err);
