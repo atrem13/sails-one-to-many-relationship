@@ -13,6 +13,7 @@ module.exports = {
       let results = await Pet.create({
         name: params.name,
         race: params.race,
+        owner: params.owner,
       }).fetch();
       return res.json(results);
     }catch(err){
@@ -22,9 +23,10 @@ module.exports = {
 
   async findOne(req, res){
     try {
+      let params = req.allParams();
       let pet = await Pet.findOne({
         id: params.id,
-      });
+      }).populate('owner');
       return res.json(pet);
     }catch(err){
       return res.serverError(err);
@@ -33,7 +35,7 @@ module.exports = {
 
   async find(req, res){
     try {
-      let pets = await Pet.find();
+      let pets = await Pet.find().populate('owner');
       return res.json(pets);
     }catch(err){
       return res.serverError(err);
@@ -43,29 +45,33 @@ module.exports = {
   async update(req, res){
     try {
       let params = req.allParams();
-      let attributes = {};
+      let attributes = {updatedAt: Date.now(),};
       if(params.name){
         attributes.name = params.name;
       }
       if(params.race){
         attributes.race = params.race;
       }
+      if(params.owner){
+        attributes.owner = params.owner;
+      }
+
       let result = await Pet.update(
         {
           id: params.id,
         },
-        attributes,
-        {updatedAt: Date.now()}
-      );
+      ).set(attributes).fetch();
+
       return res.json(result);
     }catch(err){
       return res.serverError(err);
     }
   },
 
-  async create(req, res){
+  async delete(req, res){
     try {
-      let result = await Pet.destroy(
+      let params = req.allParams();
+      let result = await Pet.destroyOne(
         {
           id: req.params.id
         }

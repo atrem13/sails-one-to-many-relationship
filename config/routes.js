@@ -14,7 +14,14 @@ module.exports.routes = {
   'GET /user' : 'UserController.find',
   'GET /user/:id' : 'UserController.findOne',
   'PATCH /user/:id' : 'UserController.update',
-  'DELETE /user/:id' : 'UserController.delete'
+  'DELETE /user/:id' : 'UserController.delete',
+
+  // Pet
+  'Post /pet' : 'PetController.create',
+  'GET /pet' : 'PetController.find',
+  'GET /pet/:id' : 'PetController.findOne',
+  'PATCH /pet/:id' : 'PetController.update',
+  'DELETE /pet/:id' : 'PetController.delete',
 
 
 };

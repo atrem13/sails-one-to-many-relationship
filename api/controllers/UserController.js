@@ -26,7 +26,7 @@ module.exports = {
         {
           id: req.params.id
         }
-      );
+      ).populate('pets');
       return  res.json(user);
     }catch(err){
       return res.serverError(err);
@@ -35,7 +35,7 @@ module.exports = {
 
   async find(req, res){
     try{
-      let users = await User.find();
+      let users = await User.find().populate('pets');
       return res.json(users);
     }catch(err){
       return res.serverError(err);
@@ -45,21 +45,21 @@ module.exports = {
   async update(req, res){
     try{
       let params = req.allParams();
-      let attributes = {};
+      let attributes = {updatedAt: Date.now(),};
+
       if(params.name){
         attributes.name = params.name;
       }
       if(params.gender){
         attributes.gender = params.gender;
       }
+
       let results = await User.update(
         {
           id: params.id
-        },
-        attributes,
-        {updatedAt: Date.now()}
+        }
+      ).set(attributes).fetch();
 
-      );
       return res.json(results);
     }catch(err){
       return res.serverError(err);
@@ -68,7 +68,8 @@ module.exports = {
 
   async delete(req, res){
     try{
-      let result = await User.destroy(
+      let params = req.allParams();
+      let result = await User.destroyOne(
         {
           id: params.id
         }
